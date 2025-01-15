@@ -1,0 +1,23 @@
+<%= turbo_frame_tag dom_id(character) do %>
+  <div class="character-card <%= 'acted' if character.acted %>">
+    <span class="name"><%= character.name %></span>
+    <div class="actions">
+      <%= button_to toggle_acted_character_path(character),
+          class: "action-button",
+          data: { turbo: true } do %>
+        <%= character.acted? ? "Undo Action" : "Mark Action Complete" %>
+      <% end %>
+      <%= button_to toggle_speed_character_path(character),
+          class: "speed-button",
+          data: { turbo: true } do %>
+        <%= character.fast_turn? ? "Switch to Slow" : "Switch to Fast" %>
+      <% end %>
+      <%= button_to character_path(character),
+          method: :delete,
+          class: "remove-button",
+          data: { turbo_confirm: "Remove #{character.name}?" } do %>
+        Remove
+      <% end %>
+    </div>
+  </div>
+<% end %>

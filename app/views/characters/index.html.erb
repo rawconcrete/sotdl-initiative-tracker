@@ -1,0 +1,39 @@
+<div class="container">
+  <h1>Shadow of the Demon Lord Initiative Tracker</h1>
+  <div class="character-form">
+    <h2>Add New Character</h2>
+    <%= form_with(model: @new_character, local: true) do |f| %>
+      <div class="field">
+        <%= f.label :name %>
+        <%= f.text_field :name, required: true %>
+      </div>
+      <div class="field">
+        <%= f.label :is_ally, "Character Type" %>
+        <%= f.select :is_ally, [['Ally', true], ['Enemy', false]] %>
+      </div>
+      <div class="field">
+        <%= f.label :fast_turn, "Turn Speed" %>
+        <%= f.select :fast_turn, [['Fast', true], ['Slow', false]] %>
+      </div>
+      <%= f.submit "Add Character", class: "button" %>
+    <% end %>
+  </div>
+  <div class="initiative-tracker">
+    <h2>Current Initiative Order</h2>
+    <%= button_to "Reset Round", reset_round_characters_path,
+        class: "reset-button",
+        data: { turbo_confirm: "Start new round?" } %>
+    <div class="characters-list">
+      <% @characters.group_by(&:initiative_group).each do |group, characters| %>
+        <div class="initiative-group">
+          <h3><%= group %></h3>
+          <% characters.each do |character| %>
+            <%= turbo_frame_tag dom_id(character) do %>
+              <%= render partial: "character", locals: { character: character } %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
