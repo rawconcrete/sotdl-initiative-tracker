@@ -72,3 +72,4 @@ end
 
 gem 'sassc-rails'
 gem 'pg'
+gem 'ostruct'

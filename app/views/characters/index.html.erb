@@ -8,6 +8,10 @@
         <%= f.text_field :name, required: true %>
       </div>
       <div class="field">
+        <%= f.label :hp, "Hit Points (HP)" %>
+        <%= f.number_field :hp, required: true, min: 1 %>
+      </div>
+      <div class="field">
         <%= f.label :is_ally, "Character Type" %>
         <%= f.select :is_ally, [['Ally', true], ['Enemy', false]] %>
       </div>

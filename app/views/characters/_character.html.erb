@@ -1,21 +1,52 @@
 <%= turbo_frame_tag dom_id(character) do %>
-  <div class="character-card <%= 'acted' if character.acted %>">
+  <div class="character-card <%= 'acted' if character.acted %> <%= health_status_class(character) %>">
     <span class="name"><%= character.name %></span>
+    <div class="stats">
+      <div class="hp-container">
+        <div class="hp-section">
+          <span class="damage-display">
+            <% if character.hp %>
+              <%= character.damage %>/<%= character.total_hp %>
+              (<%= character.hp %> + <%= character.bonus_hp %> Bonus)
+            <% else %>
+              N/A
+            <% end %>
+          </span>
+        </div>
+        <div class="hp-controls">
+          <form action="<%= apply_damage_character_path(character) %>" method="post" data-turbo="true">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <input type="number" name="damage_amount" placeholder="Damage" class="damage-input" min="-1000">
+            <input type="submit" value="Apply" class="damage-button">
+          </form>
+          <%= form_with(url: apply_bonus_hp_character_path(character), method: :post, data: { turbo: true }) do |f| %>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <%= f.number_field :bonus_hp_amount,
+                name: 'bonus_hp_amount',
+                placeholder: "Bonus HP (+/-)",
+                class: 'bonus-hp-input',
+                step: 1 %>
+            <%= f.submit "Apply", class: 'bonus-hp-button' %>
+          <% end %>
+          <% if character.bonus_hp > 0 %>
+            <form action="<%= remove_bonus_hp_character_path(character) %>" method="post" data-turbo="true">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <input type="submit" value="Remove Bonus HP" class="remove-bonus-hp-button">
+            </form>
+          <% end %>
+        </div>
+      </div>
+    </div>
     <div class="actions">
-      <%= button_to toggle_acted_character_path(character),
-          class: "action-button",
-          data: { turbo: true } do %>
-        <%= character.acted? ? "Undo Action" : "Mark Action Complete" %>
-      <% end %>
-      <%= button_to toggle_speed_character_path(character),
-          class: "speed-button",
-          data: { turbo: true } do %>
-        <%= character.fast_turn? ? "Switch to Slow" : "Switch to Fast" %>
-      <% end %>
-      <%= button_to character_path(character),
-          method: :delete,
-          class: "remove-button",
-          data: { turbo_confirm: "Remove #{character.name}?" } do %>
+      <form action="<%= toggle_acted_character_path(character) %>" method="post" data-turbo="true">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input type="submit" value="<%= character.acted? ? 'Undo Action' : 'Mark Action Complete' %>" class="action-button">
+      </form>
+      <form action="<%= toggle_speed_character_path(character) %>" method="post" data-turbo="true">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input type="submit" value="<%= character.fast_turn? ? 'Switch to Slow' : 'Switch to Fast' %>" class="speed-button">
+      </form>
+      <%= button_to character_path(character), method: :delete, class: "remove-button", data: { turbo_confirm: "Remove #{character.name}?" } do %>
         Remove
       <% end %>
     </div>

@@ -10,14 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_15_093958) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_15_121403) do
   create_table "characters", force: :cascade do |t|
     t.string "name"
     t.boolean "is_ally"
     t.boolean "fast_turn"
-    t.boolean "acted"
+    t.boolean "acted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "hp"
+    t.integer "damage", default: 0
+    t.integer "bonus_hp", default: 0
   end
 
 end

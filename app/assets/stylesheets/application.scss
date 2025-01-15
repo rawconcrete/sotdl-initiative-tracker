@@ -1,4 +1,8 @@
-.container {
+/*
+ *= require_tree .
+ */
+
+ .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -68,7 +72,6 @@ h1 {
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-bottom: 10px;
@@ -80,6 +83,16 @@ h1 {
     .name {
       text-decoration: line-through;
     }
+  }
+
+  &.injured {
+    background-color: #f8d7da; /* Light red */
+    color: #721c24;
+  }
+
+  &.incapacitated {
+    background-color: #c82333; /* Dark red */
+    color: white; /* Ensure text is readable on dark background */
   }
 
   .actions {
@@ -97,5 +110,74 @@ h1 {
 
   .remove-button {
     background: #e74c3c;
+  }
+
+  .stats {
+    flex: 1;
+    margin: 0 20px;
+  }
+
+  .hp-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .current-hp {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+
+    .max-hp {
+      color: #2c3e50;
+    }
+  }
+
+  .hp-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    form {
+      display: flex;
+      gap: 5px;
+    }
+
+    input[type="number"] {
+      width: 70px;
+      padding: 4px 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .damage-button {
+      background: #e74c3c;
+      color: white;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #c0392b;
+      }
+    }
+
+    .bonus-hp-button {
+      background: #2ecc71;
+      color: white;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #27ae60;
+      }
+    }
   }
 }
